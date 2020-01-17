@@ -1,0 +1,27 @@
+import sys
+
+def tokenize(path):
+    tokenList = []
+    for x in path:
+        tokenList = x.split()
+
+    tokenList = [x.lower() for x in tokenList]
+    return tokenList
+    #temp = set(tokenList)
+
+
+def  computeWordFrequencies(tokens):
+
+    temp = []
+    for i in tokens:
+        if i not in temp:
+            temp.append(i)
+
+    for i in range(0,len(temp)):
+        print(tokens.count(temp[i]))
+
+file0 = open("C:/Users/anon/Documents/test.txt","r")
+tokens = tokenize(file0)
+computeWordFrequencies(tokens)
+#print(len(tokens))
+
