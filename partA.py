@@ -1,37 +1,52 @@
-import re
 import sys
 
+# the runtime for my tokenize function is O(n) because I go through
+# the whole document once pairing characters together into words
 def tokenize(path):
-    file0 = open(path, "r", encoding='ascii', errors='replace')
+    k=len(path)
+    # if the file is not a .txt format then dont accept it
+    if(path[k-1]!='t'and path[k-2]!='x'and path[k-3]!='t'):
+        sys.exit(0)
+    try:
+        file0 = open(path, "r",encoding='ascii', errors='replace')
+    except:
+        sys.exit(0)
+
     tokenList = []
-    tempLine = file0.readlines()
-
-    for x in tempLine:
-        #token = re.findall(r'[^\W_]+', x)
-        token = re.findall(re.compile(r"[a-z0-9]+", re.IGNORECASE),x)
-        tokenList +=token
-
-    tokenList = [x.lower().strip() for x in tokenList]
+    word = ""
+    while True:
+        char = file0.read(1)
+        if ((char >= 'a' and char <= 'z') or (char >= 'A' and char <= 'Z') or (char >= '0' and char <= '9')):
+            word+=char.lower()
+        elif not char:
+            break
+        else:
+            if (len(word)) > 0:
+                tokenList.append(word)
+                word=""
     file0.close()
     return tokenList
 
+# the runtime for my computeWordFrequencies function is O(n) since dict in lookups
+# are O(1)avg and we loop through n terms
 def  computeWordFrequencies(tokens):
 
-    temp = []
+    # if token is in the dict already increment by 1. if not add and increment by 1
     dict={}
     for i in tokens:
-        if i not in temp:
-            temp.append(i)
-    for i in range(0,len(temp)):
-        dict[temp[i]]=tokens.count(temp[i])
+        if i in dict:
+            dict[i] += 1
+        else:
+            dict[i] = 1
     return dict
 
-def mapPrint(myMap):
-    sortedMap = sorted(myMap,key=myMap.get,reverse=True)
+# the runtime for my mapPrint function is O(n log n)
+# O(n) to print and O(logn) to sort
+def mapPrint( myMap ):
+    sortedMap = sorted(myMap, key=myMap.get, reverse=True)
 
     for i in sortedMap:
         print(i,"->",myMap[i])
-
 
 def main():
     textPath = sys.argv[1]
@@ -41,5 +56,4 @@ def main():
 
 if __name__ == "__main__":
     main()
-
 
